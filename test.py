@@ -1,2 +1,2 @@
 helloo my friend
-tere grete
+tere grete versioon 2
