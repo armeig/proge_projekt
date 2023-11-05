@@ -1,1 +1,1 @@
-helloo my friend
+a = b
