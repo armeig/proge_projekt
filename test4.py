@@ -30,8 +30,9 @@ def draw_board(position):
         text = font.render(space, True, BLACK)
         screen.blit(text, (x + 5, y + 5))
 
-def throw_dice():
-    return random.randint(1, 6)
+def throw_dice(position):
+    remaining_distance = len(board_layout) - 2 - position  # Calculate remaining distance to finish
+    return min(random.randint(1, 6), remaining_distance)  # Use the minimum of dice throw and remaining distance
 
 def display_message(message, y_offset=0):
     font = pygame.font.Font(None, 36)
@@ -40,10 +41,11 @@ def display_message(message, y_offset=0):
     screen.blit(text, text_rect)
 
 def main():
-    position = 1  # Initialize position to 1
+    position = 0  # Initialize position to 0 (at START)
     dice_rolled = False
     game_won = False
     game_started = False
+    welcome_screen = True
 
     try:
         while True:
@@ -53,38 +55,44 @@ def main():
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
-                if event.type == pygame.MOUSEBUTTONDOWN and not dice_rolled and not game_won and game_started:
-                    steps = throw_dice()
+
+                if welcome_screen and event.type == pygame.MOUSEBUTTONDOWN:
+                    welcome_screen = False
+                    game_started = True  # Game officially starts after welcome screen is clicked
+
+                if game_started and event.type == pygame.MOUSEBUTTONDOWN and not dice_rolled and not game_won:
+                    steps = throw_dice(position)  # Use the modified throw_dice function
                     print(f"You rolled a {steps}.")
                     position += steps
                     dice_rolled = True
-                elif event.type == pygame.MOUSEBUTTONDOWN and not game_started:
-                    game_started = True
 
-            if not game_started:
+            if welcome_screen:
+                # Display welcome screen
                 display_message("Joomasõbrad", y_offset=-50)
                 display_message("Henri ja Grete", y_offset=0)
                 display_message("Et mängu alustada vajuta mänguaknale", y_offset=50)
                 pygame.display.flip()  # Update the display
 
-            draw_board(position)
+            elif game_started:
+                # Display game board and handle dice rolls as before
+                draw_board(position)
 
-            if dice_rolled:
-                pygame.draw.circle(screen, (0, 0, 255), (position % 11 * 80 + 50, position // 11 * 80 + 50), 10)
-                dice_rolled = False
+                if dice_rolled:
+                    pygame.draw.circle(screen, (0, 0, 255), (position % 11 * 80 + 50, position // 11 * 80 + 50), 10)
+                    dice_rolled = False
 
-                if position >= len(board_layout) - 1:  # Check if player passes or lands on FINISH tile
-                    game_won = True
+                    if position >= len(board_layout) - 1:  # Check if player passes or lands on FINISH tile
+                        game_won = True
 
-                pygame.display.flip()  # Update the display
-                pygame.time.delay(2000)  # Delay to slow down the game (in milliseconds)
+                    pygame.display.flip()  # Update the display
+                    pygame.time.delay(2000)  # Delay to slow down the game (in milliseconds)
 
-            if game_won:
-                display_message("Palju õnne, oled võitnud")
-                pygame.display.flip()  # Update the display
-                pygame.time.delay(5000)  # Delay to display winning message for 5 seconds
-                pygame.quit()
-                sys.exit()
+                if game_won:
+                    display_message("Palju õnne, oled võitnud")
+                    pygame.display.flip()  # Update the display
+                    pygame.time.delay(5000)  # Delay to display winning message for 5 seconds
+                    pygame.quit()
+                    sys.exit()
 
             clock.tick(60)  # Cap the frame rate at 60 FPS
 
