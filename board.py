@@ -16,8 +16,8 @@ clock = pygame.time.Clock()
 
 # Define board layout (example)
 board_layout = [
-    'START', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-    '10', '11', '12', '13', '14', '15', '16', '17', '18', 'FINIŠ'
+    'START', 'TRUTH OR DRINK', 'EVERYBODY DRINKS', 'PARANOIA', 'GENERAL KNOWLEDGE', 'DARE OR DRINK', 'NEVER HAVE I EVER', 'BAILA', 'PAUSE', 'PARANOIA',
+    'TRUTH OR DRINK', 'GENERAL KNOWLEDGE', 'BAILA', 'DOWN YOUR DRINK', 'NEVER HAVE I EVER', 'DARE OR DRINK', 'FINIŠ'
 ]
 
 def draw_board():
