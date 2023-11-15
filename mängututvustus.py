@@ -1,4 +1,4 @@
-# mängututvustus.py
+
 
 def kuvage_juhendid():
     return """
