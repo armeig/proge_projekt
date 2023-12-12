@@ -34,6 +34,8 @@ import random
 
 
 
+import random
+
 def challenges(fail):
     mitu_rida = 0
     andmed = []
@@ -51,26 +53,38 @@ def challenges(fail):
     return küsimus
 
 def tiles(position):
+    valjakutse = ""
+    challenge_name = ""
     if position == 1 or position == 10 or position == 16:
         valjakutse = challenges('truthordrink.txt')
+        challenge_name = "Truth or drink"
     elif position == 4 or position == 11 or position == 18:
         valjakutse = challenges('generalknowledgeq.txt')
+        challenge_name = "General knowledge"
     elif position == 2 or position == 20:
-        print("EVERYBODY DRINKS!")
+        valjakutse = "EVERYBODY DRINKS!"
+        challenge_name = "EVERYBODY DRINKS!"
     elif position == 3 or position == 9:
-        print("Astu korra seadmega teistest eemale, et järgnevat küsimust näeksid ainult sina!")
+        valjakutse = "Astu korra seadmega teistest eemale, et järgnevat küsimust näeksid ainult sina!"
         valjakutse = challenges('paranoia.txt')
+        challenge_name = "Paranoia"
     elif position == 5 or position == 15 or position == 19:
         valjakutse = challenges('dareordrink.txt')
+        challenge_name = "Dare or drink"
     elif position == 6 or position == 14:
         valjakutse = challenges('neverhaveiever.txt')
+        challenge_name = "Never have i ever"
     elif position == 7 or position == 12 or position == 17:
         valjakutse = challenges('baila.txt')
+        challenge_name = "Baila"
     elif position == 8:
-        print("LUCKY YOU! You can rest right now and not drink.")
+        valjakutse = "LUCKY YOU! You can rest right now and not drink."
+        challenge_name = "LUCKY"
     elif position == 13:
-        print("Finish your drink right this second and go make yourself a new one.")
-    return valjakutse
+        valjakutse = "Finish your drink right this second and go make yourself a new one."
+        challenge_name = "CHUG"
+    return valjakutse, challenge_name
+
 
 
 
@@ -100,14 +114,19 @@ def draw_game_board(position):
         text = font.render(square, True, BLACK)
         screen.blit(text, (x + 5, y + 5))
 
-def display_popup(title, text):
+def display_popup(title, text, challenge_name):
     screen.fill((255, 255, 255))
-    pygame.draw.rect(screen, (0, 0, 0), (200, 200, 600, 400))  
-    font = pygame.font.Font(None, 36)
-    title_text = font.render(title, True, (255, 255, 255))
-    text_text = font.render(text, True, (255, 255, 255))
+    pygame.draw.rect(screen, (0, 0, 0), (200, 200, 600, 400))
+    font_title = pygame.font.Font(None, 36)
+    font_challenge_name = pygame.font.Font(None, 24)  
+    title_text = font_title.render(title, True, (255, 255, 255))
+    challenge_name_text = font_challenge_name.render(challenge_name, True, (255, 255, 255))  
+    text_text = font_title.render(text, True, (255, 255, 255))
     screen.blit(title_text, (400 - title_text.get_width() // 2, 250))
+    screen.blit(challenge_name_text, (210, 210))  
     screen.blit(text_text, (400 - text_text.get_width() // 2, 300))
+
+
 
 def roll_dice():
     return random.randint(1, 6)
@@ -157,9 +176,10 @@ def play_game():
                     position += steps
                     dice_rolled = True
 
-                    challenge_text = tiles(position)
+                    challenge_text, challenge_name = tiles(position)
                     if challenge_text:
-                        display_popup("Challenge", challenge_text)
+                        bottom = "or drink"
+                        display_popup(" ", challenge_text, challenge_name)
                         pygame.display.flip()
                         
 
