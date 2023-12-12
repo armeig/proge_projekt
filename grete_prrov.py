@@ -7,7 +7,7 @@ def challenges(fail):
     for rida in f:
         uus = rida.strip().split(': ')
         mitu_rida += 1
-        andmed.append([int(uus[0]),uus[1]])
+        andmed.append([int(uus[0]),uus[1:]])
     f.close()
     number = random.randint(1, mitu_rida)
     print(number)
@@ -35,8 +35,10 @@ def tiles(position):
     elif position == 8:
         valjakutse = "LUCKY YOU! You can rest right now and not drink."
     elif position == 13:
-        valjakutse = "Finish your drink right this second and go make yourself a new one."
+        valjakutse = "Down your drink right this second and go make yourself a new one."
     return valjakutse
 
-x = tiles(6)
+x = tiles(7)
 print(x)
+
+

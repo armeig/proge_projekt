@@ -26,28 +26,67 @@ import pygame
 import random
 import sys
 
+import random
 
-
-challenges_dict = {
-    5: [
-        "Slide into your crush’s DMs.",
-        "Tell everybody your biggest secret.",
-        "Tell everybody a secret that you’ve never told anyone.",
-        "Drink! ayyyy ;)",
-        "Tell everyone about your worst date.",
-        "Kiss the person that’s on your left. (If you’re in a relationship with them, kiss the person on your right - if you say no, you drink, if they say no, you both have to drink)",
-        "Compliment the person sitting opposite of you.",
-        "Show us your Instagram search history.",
-        "Show us your Google search history.",
-        "Drink! heh ;)",
-        "Do 150 pushups. (If you start and can’t complete 150 pushups you have to down your drink altogether)",
-        "Give everyone in this room 5€.",
-        "Post on your Insta story “real friends don’t exist, everyone’s fake in this generation”",
-        "Send “i miss you, wanna link?” to your ex (if you don’t have an ex - drink)",
-        "Describe vividly your biggest sexual fantasy.",
-    ],
     
-}
+
+
+
+
+
+import random
+
+def challenges(fail):
+    mitu_rida = 0
+    andmed = []
+    f = open(fail, encoding='UTF-8')
+    for rida in f:
+        uus = rida.strip().split(': ')
+        mitu_rida += 1
+        andmed.append([int(uus[0]),uus[1]])
+    f.close()
+    number = random.randint(1, mitu_rida)
+    print(number)
+    for paar in andmed:
+        if number == paar[0]:
+            küsimus = paar[1]
+    return küsimus
+
+def tiles(position):
+    valjakutse = ""
+    challenge_name = ""
+    if position == 1 or position == 10 or position == 16:
+        valjakutse = challenges('truthordrink.txt')
+        challenge_name = "Truth or drink"
+    elif position == 4 or position == 11 or position == 18:
+        valjakutse = challenges('generalknowledgeq.txt')
+        challenge_name = "General knowledge"
+    elif position == 2 or position == 20:
+        valjakutse = "EVERYBODY DRINKS!"
+        challenge_name = "EVERYBODY DRINKS!"
+    elif position == 3 or position == 9:
+        valjakutse = "Astu korra seadmega teistest eemale, et järgnevat küsimust näeksid ainult sina!"
+        valjakutse = challenges('paranoia.txt')
+        challenge_name = "Paranoia"
+    elif position == 5 or position == 15 or position == 19:
+        valjakutse = challenges('dareordrink.txt')
+        challenge_name = "Dare or drink"
+    elif position == 6 or position == 14:
+        valjakutse = challenges('neverhaveiever.txt')
+        challenge_name = "Never have i ever"
+    elif position == 7 or position == 12 or position == 17:
+        valjakutse = challenges('baila.txt')
+        challenge_name = "Baila"
+    elif position == 8:
+        valjakutse = "LUCKY YOU! You can rest right now and not drink."
+        challenge_name = "LUCKY"
+    elif position == 13:
+        valjakutse = "Finish your drink right this second and go make yourself a new one."
+        challenge_name = "CHUG"
+    return valjakutse, challenge_name
+
+
+
 
 
 pygame.init()
@@ -75,14 +114,19 @@ def draw_game_board(position):
         text = font.render(square, True, BLACK)
         screen.blit(text, (x + 5, y + 5))
 
-def display_popup(title, text):
+def display_popup(title, text, challenge_name):
     screen.fill((255, 255, 255))
-    pygame.draw.rect(screen, (0, 0, 0), (200, 200, 600, 400))  
-    font = pygame.font.Font(None, 36)
-    title_text = font.render(title, True, (255, 255, 255))
-    text_text = font.render(text, True, (255, 255, 255))
+    pygame.draw.rect(screen, (0, 0, 0), (200, 200, 600, 400))
+    font_title = pygame.font.Font(None, 36)
+    font_challenge_name = pygame.font.Font(None, 24)  
+    title_text = font_title.render(title, True, (255, 255, 255))
+    challenge_name_text = font_challenge_name.render(challenge_name, True, (255, 255, 255))  
+    text_text = font_title.render(text, True, (255, 255, 255))
     screen.blit(title_text, (400 - title_text.get_width() // 2, 250))
+    screen.blit(challenge_name_text, (210, 210))  
     screen.blit(text_text, (400 - text_text.get_width() // 2, 300))
+
+
 
 def roll_dice():
     return random.randint(1, 6)
@@ -94,6 +138,7 @@ def display_message(message, y_offset=0):
         text = font.render(line, True, BLACK)
         text_rect = text.get_rect(center=(500, 100 + y_offset + i * 30))
         screen.blit(text, text_rect)
+
 
 def play_game():
     position = 0
@@ -131,9 +176,15 @@ def play_game():
                     position += steps
                     dice_rolled = True
 
+                    challenge_text, challenge_name = tiles(position)
+                    if challenge_text:
+                        bottom = "or drink"
+                        display_popup(" ", challenge_text, challenge_name)
+                        pygame.display.flip()
+                        
+
             if welcome_screen and not instructions_screen:
                 display_message("Drinking Friends", y_offset=-50)
-                display_message("Henri and Grete", y_offset=0)
                 display_message("Click on the screen to see the instructions for the game", y_offset=50)
                 pygame.display.flip()
 
@@ -149,29 +200,10 @@ def play_game():
                     dice_rolled = False
 
                     if position >= len(board_shape) - 1:
-                        
-                        if position in challenges_dict and not show_popup:
-                            show_popup = True
-
                         game_won = True
                         win_time = pygame.time.get_ticks()
 
                     pygame.display.flip()
-
-                if show_popup:
-                    
-                    current_tile_challenges = challenges_dict[position]
-                    challenge_text = current_tile_challenges[0]  
-                    display_popup("Truth or Drink", challenge_text)
-                    pygame.display.flip()
-
-                    
-                    for event_popup in pygame.event.get():
-                        if event_popup.type == pygame.KEYDOWN and event_popup.key == pygame.K_s:
-                            show_popup = False
-                            current_tile_challenges.pop(0)  
-
-                    continue  
 
                 if game_won:
                     if pygame.time.get_ticks() - win_time < 5000:
