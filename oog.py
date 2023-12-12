@@ -7,6 +7,10 @@ RULES_SCREEN = 1
 GAME_SCREEN = 2
 current_screen = TITLE_SCREEN
 
+dice_image = pygame.image.load('R.png')
+dice_image = pygame.transform.scale(dice_image, (200, 200))
+
+
 def display_instructions():
     return """
     Welcome to the game "Drinking Friends" - Ultimate Drinking Adventure!
@@ -74,13 +78,23 @@ board_shape = [
 ]
 
 def draw_game_board(position):
+    tile_width = 120
+    tile_height = 120
+    tile_margin = 20
+
+    start_x = 50
+    start_y = 50
+
     for i, square in enumerate(board_shape):
-        x = 30 + (i % 11) * 80
-        y = 30 + (i // 11) * 80
-        pygame.draw.rect(screen, BLACK, (x, y, 60, 60), 3)
-        font = pygame.font.Font(None, 24)
+        x = start_x + (i % 5) * (tile_width + tile_margin)
+        y = start_y + (i // 5) * (tile_height + tile_margin)
+        pygame.draw.rect(screen, BLACK, (x, y, tile_width, tile_height), 3)
+        font = pygame.font.Font(None, 36)
         text = font.render(square, True, BLACK)
-        screen.blit(text, (x + 5, y + 5))
+        text_x = x + (tile_width - text.get_width()) / 2
+        text_y = y + (tile_height - text.get_height()) / 2
+        screen.blit(text, (text_x, text_y))
+
 
 def display_popup(title, text, challenge_name):
     screen.fill((255, 255, 255))
@@ -105,6 +119,14 @@ def display_message(message, y_offset=0):
         text_rect = text.get_rect(center=(500, 100 + y_offset + i * 30))
         screen.blit(text, text_rect)
 
+def display_message2(message, y_offset=0):
+    font = pygame.font.Font(None, 40)
+    lines = message.strip().split("\n")
+    for i, line in enumerate(lines):
+        text = font.render(line, True, BLACK)
+        text_rect = text.get_rect(center=(500, 400 + y_offset + i * 30))
+        screen.blit(text, text_rect)
+
 def play_game():
     global current_screen
     
@@ -117,7 +139,7 @@ def play_game():
     instructions = display_instructions()
     win_time = None
     show_popup = False
-    button_x, button_y, button_width, button_height = 400, 600, 200, 50 
+    button_x, button_y, button_width, button_height = 400, 600, 200, 200 
 
     try:
         while True:
@@ -146,8 +168,11 @@ def play_game():
             elif current_screen == GAME_SCREEN:
                 draw_game_board(position)
 
-                pygame.draw.rect(screen, BLACK, (button_x, button_y, button_width, button_height))
-                display_message("Roll Dice", y_offset=350)
+                screen.blit(dice_image, (button_x, button_y))
+                
+                dot_x = start_x + (position % 5) * (tile_width + tile_margin) + tile_width / 2
+                dot_y = start_y + (position // 5) * (tile_height + tile_margin) + tile_height / 2
+                pygame.draw.circle(screen, (255, 0, 0), (int(dot_x), int(dot_y)), 15)
 
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
@@ -165,6 +190,15 @@ def play_game():
                                 display_popup(" ", challenge_text, challenge_name)
                                 pygame.display.flip()
 
+                                waiting_for_input = True
+                                while waiting_for_input:
+                                    for sub_event in pygame.event.get():
+                                        if sub_event.type == pygame.QUIT:
+                                            pygame.quit()
+                                            sys.exit()
+                                        elif sub_event.type == pygame.MOUSEBUTTONDOWN or sub_event.type == pygame.KEYDOWN:
+                                            waiting_for_input = False
+
                 if dice_rolled:
                     pygame.draw.circle(screen, (0, 0, 255), (position % 11 * 80 + 50, position // 11 * 80 + 50), 10)
                     dice_rolled = False
@@ -175,7 +209,7 @@ def play_game():
 
                 if game_won:
                     if pygame.time.get_ticks() - win_time < 5000:
-                        display_message("Congratulations, you have won!")
+                        display_message2("Congratulations, you have won!")
                         pygame.display.flip()
                     else:
                         pygame.quit()
