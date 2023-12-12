@@ -1,11 +1,5 @@
 import random
 
-    
-
-
-
-
-
 def challenges(fail):
     mitu_rida = 0
     andmed = []
@@ -19,7 +13,7 @@ def challenges(fail):
     print(number)
     for paar in andmed:
         if number == paar[0]:
-            küsimus = paar[1]
+            küsimus = paar[1:]
     return küsimus
 
 def tiles(position):
@@ -28,9 +22,9 @@ def tiles(position):
     elif position == 4 or position == 11 or position == 18:
         valjakutse = challenges('generalknowledgeq.txt')
     elif position == 2 or position == 20:
-        print("EVERYBODY DRINKS!")
+        valjakutse = "EVERYBODY DRINKS!"
     elif position == 3 or position == 9:
-        print("Astu korra seadmega teistest eemale, et järgnevat küsimust näeksid ainult sina!")
+        valjakutse = "Astu korra seadmega teistest eemale, et järgnevat küsimust näeksid ainult sina!"
         valjakutse = challenges('paranoia.txt')
     elif position == 5 or position == 15 or position == 19:
         valjakutse = challenges('dareordrink.txt')
@@ -39,9 +33,10 @@ def tiles(position):
     elif position == 7 or position == 12 or position == 17:
         valjakutse = challenges('baila.txt')
     elif position == 8:
-        print("LUCKY YOU! You can rest right now and not drink.")
+        valjakutse = "LUCKY YOU! You can rest right now and not drink."
     elif position == 13:
-        print("Finish your drink right this second and go make yourself a new one.")
+        valjakutse = "Finish your drink right this second and go make yourself a new one."
     return valjakutse
 
-
+x = tiles(6)
+print(x)
