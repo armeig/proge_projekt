@@ -95,6 +95,7 @@ def display_message(message, y_offset=0):
         text_rect = text.get_rect(center=(500, 100 + y_offset + i * 30))
         screen.blit(text, text_rect)
 
+
 def play_game():
     position = 0
     dice_rolled = False
@@ -131,9 +132,15 @@ def play_game():
                     position += steps
                     dice_rolled = True
 
+                    
+                    if position in challenges_dict:
+                        challenge_text = random.choice(challenges_dict[position])
+                        display_popup("Challenge", challenge_text)
+                        pygame.display.flip()
+                        
+
             if welcome_screen and not instructions_screen:
                 display_message("Drinking Friends", y_offset=-50)
-                display_message("Henri and Grete", y_offset=0)
                 display_message("Click on the screen to see the instructions for the game", y_offset=50)
                 pygame.display.flip()
 
@@ -149,29 +156,10 @@ def play_game():
                     dice_rolled = False
 
                     if position >= len(board_shape) - 1:
-                        
-                        if position in challenges_dict and not show_popup:
-                            show_popup = True
-
                         game_won = True
                         win_time = pygame.time.get_ticks()
 
                     pygame.display.flip()
-
-                if show_popup:
-                    
-                    current_tile_challenges = challenges_dict[position]
-                    challenge_text = current_tile_challenges[0]  
-                    display_popup("Truth or Drink", challenge_text)
-                    pygame.display.flip()
-
-                    
-                    for event_popup in pygame.event.get():
-                        if event_popup.type == pygame.KEYDOWN and event_popup.key == pygame.K_s:
-                            show_popup = False
-                            current_tile_challenges.pop(0)  
-
-                    continue  
 
                 if game_won:
                     if pygame.time.get_ticks() - win_time < 5000:
