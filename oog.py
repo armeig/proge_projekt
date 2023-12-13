@@ -76,6 +76,8 @@ def tiles(position):
 
 pygame.init()
 screen = pygame.display.set_mode((1000, 800))
+esileht_image = pygame.image.load('esileht.jpg')
+esileht_image = pygame.transform.scale(esileht_image, (1000, 800))
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 clock = pygame.time.Clock()
@@ -174,7 +176,8 @@ def play_game():
                             current_screen = GAME_SCREEN
 
             if current_screen == TITLE_SCREEN:
-                display_message("Drinking Friends - Click to Start", y_offset=-50)
+                screen.blit(esileht_image, (0, 0))
+                
                 pygame.draw.rect(screen, BLACK, (button_x, button_y, button_width, button_height))
 
             elif current_screen == RULES_SCREEN:
