@@ -1,11 +1,19 @@
 import pygame
 import random
 import sys
+import textwrap
 
 TITLE_SCREEN = 0
 RULES_SCREEN = 1
 GAME_SCREEN = 2
 current_screen = TITLE_SCREEN
+tile_width = 120
+tile_height = 120
+tile_margin = 20
+
+start_x = 50
+start_y = 50
+
 
 dice_image = pygame.image.load('R.png')
 dice_image = pygame.transform.scale(dice_image, (200, 200))
@@ -78,12 +86,7 @@ board_shape = [
 ]
 
 def draw_game_board(position):
-    tile_width = 120
-    tile_height = 120
-    tile_margin = 20
-
-    start_x = 50
-    start_y = 50
+    
 
     for i, square in enumerate(board_shape):
         x = start_x + (i % 5) * (tile_width + tile_margin)
@@ -100,13 +103,26 @@ def display_popup(title, text, challenge_name):
     screen.fill((255, 255, 255))
     pygame.draw.rect(screen, (0, 0, 0), (200, 200, 600, 400))
     font_title = pygame.font.Font(None, 36)
-    font_challenge_name = pygame.font.Font(None, 24)  
+    font_challenge_name = pygame.font.Font(None, 40)  
+    font_text = pygame.font.Font(None, 30)
     title_text = font_title.render(title, True, (255, 255, 255))
     challenge_name_text = font_challenge_name.render(challenge_name, True, (255, 255, 255))  
-    text_text = font_title.render(text, True, (255, 255, 255))
+    #text_text = font_title.render(text, True, (255, 255, 255))
     screen.blit(title_text, (400 - title_text.get_width() // 2, 250))
     screen.blit(challenge_name_text, (210, 210))  
-    screen.blit(text_text, (400 - text_text.get_width() // 2, 300))
+    #screen.blit(text_text, (400 - text_text.get_width() // 2, 300))
+
+    wrapped_text = textwrap.fill(text, width=50)  
+    y_offset = 350
+    screen_width = screen.get_width()
+
+    for line in wrapped_text.split('\n'):
+        rendered_line = font_text.render(line, True, (255, 255, 255))
+        #screen.blit(rendered_line, (220, y_offset))
+        line_width = rendered_line.get_width()
+        x_coordinate = (screen_width - line_width) // 2
+        screen.blit(rendered_line, (x_coordinate, y_offset))
+        y_offset += font_text.get_linesize()
 
 def roll_dice():
     return random.randint(1, 6)
