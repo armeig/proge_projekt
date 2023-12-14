@@ -308,7 +308,7 @@ def play_game():
             if current_screen == TITLE_SCREEN:
                 screen.blit(esileht_image, (0, 0))
                 pygame.draw.rect(screen, Green, (button2_x, button2_y, button2_width, button2_height))
-                text_surface = button_font.render("Click", True, BLACK)  
+                text_surface = button_font.render("Continue", True, BLACK)  
                 text_rect = text_surface.get_rect(center=(button2_x + button2_width // 2, button2_y + button2_height // 2))
                 screen.blit(text_surface, text_rect)
 
