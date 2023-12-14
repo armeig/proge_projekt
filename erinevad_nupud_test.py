@@ -223,6 +223,8 @@ def display_message2(message, y_offset=0):
         text_rect = text.get_rect(center=(500, 400 + y_offset + i * 30))
         screen.blit(text, text_rect)
 
+
+
 def play_game():
     global current_screen
     
@@ -236,7 +238,9 @@ def play_game():
     win_time = None
     show_popup = False
     waiting_for_input = False
-    button_x, button_y, button_width, button_height = 400, 600, 200, 200 
+    button_x, button_y, button_width, button_height = 400, 600, 200, 200
+    button2_x, button2_y, button2_width, button2_height = 350, 475, 300, 100
+    Green = (0, 204, 0)
     
     try:
         while True:
@@ -248,38 +252,14 @@ def play_game():
                     sys.exit()
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     mouse_x, mouse_y = event.pos
-                    if button_x <= mouse_x <= button_x + button_width and button_y <= mouse_y <= button_y + button_height:
-                        if current_screen == TITLE_SCREEN:
-                            current_screen = RULES_SCREEN
-                        elif current_screen == RULES_SCREEN:
-                            current_screen = GAME_SCREEN
+                    if current_screen in [TITLE_SCREEN, RULES_SCREEN]:
+                        if button2_x <= mouse_x <= button2_x + button2_width and button2_y <= mouse_y <= button2_y + button2_height:
+                            if current_screen == TITLE_SCREEN:
+                                current_screen = RULES_SCREEN
+                            elif current_screen == RULES_SCREEN:
+                                current_screen = GAME_SCREEN
 
-            if current_screen == TITLE_SCREEN:
-                screen.blit(esileht_image, (0, 0))
-                
-                pygame.draw.rect(screen, BLACK, (button_x, button_y, button_width, button_height))
-
-            elif current_screen == RULES_SCREEN:
-                display_message(display_instructions(), y_offset=-50)
-                screen.blit(reeglite_leht_pilt, (0, 0))
-                pygame.draw.rect(screen, BLACK, (button_x, button_y, button_width, button_height))
-
-            elif current_screen == GAME_SCREEN:
-                screen.blit(mängu_leht_pilt, (0, 0))
-                draw_game_board(position)
-
-                screen.blit(dice_image, (button_x, button_y))
-                
-                dot_x = start_x + (position % 5) * (tile_width + tile_margin) + tile_width / 2
-                dot_y = start_y + (position // 5) * (tile_height + tile_margin) + tile_height / 2
-                pygame.draw.circle(screen, (255, 0, 0), (int(dot_x), int(dot_y)), 15)
-
-                for event in pygame.event.get():
-                    if event.type == pygame.QUIT:
-                        pygame.quit()
-                        sys.exit()
-                    elif event.type == pygame.MOUSEBUTTONDOWN:
-                        mouse_x, mouse_y = event.pos
+                    elif current_screen == GAME_SCREEN:
                         if button_x <= mouse_x <= button_x + button_width and button_y <= mouse_y <= button_y + button_height:
                             steps = roll_dice()
                             print(f"You rolled {steps}.")
@@ -289,7 +269,6 @@ def play_game():
                             if challenge_text:
                                 display_popup(" ", challenge_text, challenge_name)
                                 pygame.display.flip()
-
                                 waiting_for_input = True
                                 while waiting_for_input:
                                     for sub_event in pygame.event.get():
@@ -316,14 +295,31 @@ def play_game():
                     pygame.display.flip()
                     
                     waiting_for_input = True
-                while waiting_for_input:
-                    for event in pygame.event.get():
-                        if event.type == pygame.QUIT:
-                            pygame.quit()
-                            sys.exit()
-                        elif event.type == pygame.MOUSEBUTTONDOWN or event.type == pygame.KEYDOWN:
-                            waiting_for_input = False
-                    break
+                    while waiting_for_input:
+                        for event in pygame.event.get():
+                            if event.type == pygame.QUIT:
+                                pygame.quit()
+                                sys.exit()
+                            elif event.type == pygame.MOUSEBUTTONDOWN or event.type == pygame.KEYDOWN:
+                                waiting_for_input = False
+                        break
+
+            if current_screen == TITLE_SCREEN:
+                screen.blit(esileht_image, (0, 0))
+                pygame.draw.rect(screen, Green, (button2_x, button2_y, button2_width, button2_height))
+
+            elif current_screen == RULES_SCREEN:
+                display_message(display_instructions(), y_offset=-50)
+                screen.blit(reeglite_leht_pilt, (0, 0))
+                pygame.draw.rect(screen, Green, (button2_x, button2_y, button2_width, button2_height))
+
+            elif current_screen == GAME_SCREEN:
+                screen.blit(mängu_leht_pilt, (0, 0))
+                draw_game_board(position)
+                screen.blit(dice_image, (button_x, button_y))
+                dot_x = start_x + (position % 5) * (tile_width + tile_margin) + tile_width / 2
+                dot_y = start_y + (position // 5) * (tile_height + tile_margin) + tile_height / 2
+                pygame.draw.circle(screen, (255, 0, 0), (int(dot_x), int(dot_y)), 15)
 
             pygame.display.flip()
             clock.tick(60)
