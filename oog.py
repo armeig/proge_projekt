@@ -78,6 +78,12 @@ pygame.init()
 screen = pygame.display.set_mode((1000, 800))
 esileht_image = pygame.image.load('esileht.jpg')
 esileht_image = pygame.transform.scale(esileht_image, (1000, 800))
+reeglite_leht_pilt = pygame.image.load('taust.jpg')
+reeglite_leht_pilt = pygame.transform.scale(reeglite_leht_pilt, (1000, 800))
+mängu_leht_pilt = pygame.image.load('taust.jpg')
+mängu_leht_pilt = pygame.transform.scale(mängu_leht_pilt, (1000, 800))
+truthordrink_image = pygame.image.load('truthordrinktile.jpg')
+truthordrink_image = pygame.transform.scale(truthordrink_image, (tile_width, tile_height))
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 clock = pygame.time.Clock()
@@ -93,13 +99,43 @@ def draw_game_board(position):
     for i, square in enumerate(board_shape):
         x = start_x + (i % 5) * (tile_width + tile_margin)
         y = start_y + (i // 5) * (tile_height + tile_margin)
-        pygame.draw.rect(screen, BLACK, (x, y, tile_width, tile_height), 3)
-        font = pygame.font.Font(None, 36)
-        text = font.render(square, True, BLACK)
-        text_x = x + (tile_width - text.get_width()) / 2
-        text_y = y + (tile_height - text.get_height()) / 2
-        screen.blit(text, (text_x, text_y))
+       
+        if i in [1, 10, 16]:  
+            screen.blit(truthordrink_image, (x, y))
 
+        else:
+            pygame.draw.rect(screen, BLACK, (x, y, tile_width, tile_height), 3)
+            font = pygame.font.Font(None, 36)
+            text = font.render(square, True, BLACK)
+            text_x = x + (tile_width - text.get_width()) / 2
+            text_y = y + (tile_height - text.get_height()) / 2
+            screen.blit(text, (text_x, text_y))
+
+def display_popup2(title, text, challenge_name):
+    screen.fill((255, 255, 255))
+    pygame.draw.rect(screen, (0, 0, 0), (200, 200, 600, 400))
+    font_title = pygame.font.Font(None, 40)
+    font_challenge_name = pygame.font.Font(None, 40)  
+    font_text = pygame.font.Font(None, 27)
+    title_text = font_title.render(title, True, (255, 255, 255))
+    challenge_name_text = font_challenge_name.render(challenge_name, True, (255, 255, 255))  
+    #text_text = font_title.render(text, True, (255, 255, 255))
+    screen.blit(title_text, (500 - title_text.get_width() // 2, 250))
+    screen.blit(challenge_name_text, (210, 210))  
+    #screen.blit(text_text, (400 - text_text.get_width() // 2, 300))
+
+    wrapped_text = textwrap.fill(text, width=50)  
+    y_offset = 350
+    screen_width = screen.get_width()
+
+    for line in wrapped_text.split('\n'):
+        rendered_line = font_text.render(line, True, (255, 255, 255))
+        #screen.blit(rendered_line, (220, y_offset))
+        line_width = rendered_line.get_width()
+        x_coordinate = (screen_width - line_width) // 2
+        screen.blit(rendered_line, (x_coordinate, y_offset))
+        y_offset += font_text.get_linesize()
+    
 
 def display_popup(title, text, challenge_name):
     screen.fill((255, 255, 255))
@@ -157,6 +193,7 @@ def play_game():
     instructions = display_instructions()
     win_time = None
     show_popup = False
+    waiting_for_input = False
     button_x, button_y, button_width, button_height = 400, 600, 200, 200 
 
     try:
@@ -182,9 +219,11 @@ def play_game():
 
             elif current_screen == RULES_SCREEN:
                 display_message(display_instructions(), y_offset=-50)
+                screen.blit(reeglite_leht_pilt, (0, 0))
                 pygame.draw.rect(screen, BLACK, (button_x, button_y, button_width, button_height))
 
             elif current_screen == GAME_SCREEN:
+                screen.blit(mängu_leht_pilt, (0, 0))
                 draw_game_board(position)
 
                 screen.blit(dice_image, (button_x, button_y))
@@ -223,16 +262,26 @@ def play_game():
                     dice_rolled = False
 
                     if position >= len(board_shape) - 1:
+                        position = len(board_shape) - 1
                         game_won = True
                         win_time = pygame.time.get_ticks()
 
                 if game_won:
-                    if pygame.time.get_ticks() - win_time < 5000:
-                        display_message2("Congratulations, you have won!")
-                        pygame.display.flip()
-                    else:
-                        pygame.quit()
-                        sys.exit()
+                    victory_title = "Congratulations!"
+                    victory_text = "You have won the game!"
+                    victory_challenge_name = "VICTORY"
+                    display_popup2(victory_title, victory_text, victory_challenge_name)
+                    pygame.display.flip()
+                    
+                    waiting_for_input = True
+                while waiting_for_input:
+                    for event in pygame.event.get():
+                        if event.type == pygame.QUIT:
+                            pygame.quit()
+                            sys.exit()
+                        elif event.type == pygame.MOUSEBUTTONDOWN or event.type == pygame.KEYDOWN:
+                            waiting_for_input = False
+                    break
 
             pygame.display.flip()
             clock.tick(60)
