@@ -84,6 +84,24 @@ mängu_leht_pilt = pygame.image.load('taust.jpg')
 mängu_leht_pilt = pygame.transform.scale(mängu_leht_pilt, (1000, 800))
 truthordrink_image = pygame.image.load('truthordrinktile.jpg')
 truthordrink_image = pygame.transform.scale(truthordrink_image, (tile_width, tile_height))
+dareordrink_image = pygame.image.load('dareordrinktile.jpg')
+dareordrink_image = pygame.transform.scale(dareordrink_image, (tile_width, tile_height))
+downyourdrink_image = pygame.image.load('downyourdrink.jpg')
+downyourdrink_image = pygame.transform.scale(downyourdrink_image, (tile_width, tile_height))
+baila_image = pygame.image.load('bailatile.jpg')
+baila_image = pygame.transform.scale(baila_image, (tile_width, tile_height))
+everybody_drink_image = pygame.image.load('everybodydrinks.jpg')
+everybody_drink_image = pygame.transform.scale(everybody_drink_image, (tile_width, tile_height))
+neverhaveiever_image = pygame.image.load('neverhaveievertile.jpg')
+neverhaveiever_image = pygame.transform.scale(neverhaveiever_image, (tile_width, tile_height))
+Lucky_you_image = pygame.image.load('lucky you.jpg')
+Lucky_you_image = pygame.transform.scale(Lucky_you_image, (tile_width, tile_height))
+paranoia_image = pygame.image.load('paranoiatile.jpg')
+paranoia_image = pygame.transform.scale(paranoia_image, (tile_width, tile_height))
+generalknowledge_image = pygame.image.load('generalknowledgetile.jpg')
+generalknowledge_image = pygame.transform.scale(generalknowledge_image, (tile_width, tile_height))
+
+
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 clock = pygame.time.Clock()
@@ -102,6 +120,30 @@ def draw_game_board(position):
        
         if i in [1, 10, 16]:  
             screen.blit(truthordrink_image, (x, y))
+        
+        elif i in [5, 15, 19]:
+            screen.blit(dareordrink_image, (x, y))
+        
+        elif i in [13]:
+            screen.blit(downyourdrink_image, (x, y))
+        
+        elif i in [7, 12, 17]:
+            screen.blit(baila_image, (x, y))
+        
+        elif i in [2, 20]:
+            screen.blit(everybody_drink_image, (x, y))
+
+        elif i in [6, 14]:
+            screen.blit(neverhaveiever_image, (x, y))
+        
+        elif i in [8]:
+            screen.blit(Lucky_you_image, (x,y))
+        
+        elif i in [3, 9]:
+            screen.blit(paranoia_image, (x, y))
+        
+        elif i in [4, 11, 18]:
+            screen.blit(generalknowledge_image, (x, y))
 
         else:
             pygame.draw.rect(screen, BLACK, (x, y, tile_width, tile_height), 3)
