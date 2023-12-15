@@ -100,7 +100,10 @@ paranoia_image = pygame.image.load('paranoiatile.jpg')
 paranoia_image = pygame.transform.scale(paranoia_image, (tile_width, tile_height))
 generalknowledge_image = pygame.image.load('generalknowledgetile.jpg')
 generalknowledge_image = pygame.transform.scale(generalknowledge_image, (tile_width, tile_height))
-
+Finish_image = pygame.image.load('finish.jpg')
+Finish_image = pygame.transform.scale(Finish_image, (tile_width, tile_height))
+start_image = pygame.image.load('start.jpg')
+start_image = pygame.transform.scale(start_image, (tile_width, tile_height))
 
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
@@ -144,6 +147,12 @@ def draw_game_board(position):
         
         elif i in [4, 11, 18]:
             screen.blit(generalknowledge_image, (x, y))
+        
+        elif i in [21]:
+            screen.blit(Finish_image, (x, y))
+        
+        elif i in [0]:
+            screen.blit(start_image, (x, y))
 
         else:
             pygame.draw.rect(screen, BLACK, (x, y, tile_width, tile_height), 3)
