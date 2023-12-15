@@ -20,11 +20,8 @@ dice_image = pygame.transform.scale(dice_image, (200, 200))
 
 
 def display_instructions():
-    return """
-    Welcome to the game "Drinking Friends" - Ultimate Drinking Adventure!
-    ...
-    Press 's' and then click on the screen to start the game and let the laughter flow!
-    """
+    return "The player with the highest rice test score, rolls the dice first. To roll the dice, click on the dice. If the dice has been rolled, wait until the next screen with the challenge/question is displayed. The golden rule is the challenge is not complete until someone drinks. If at any point in the game you feel like you can’t drink anymore - just exchange alcohol with water. We do not encourage peer pressure! The aim of the game is to have fun! If you want to move on and there is no button, just click on the screen. In never have I ever you drink if you HAVE done it. HAVE FUN!"
+
 def challenges(file):
     how_many_lines = 0
     data = []
@@ -84,7 +81,7 @@ def tiles(position):
     if position == 1 or position == 10 or position == 16:
         call = challenges('truthordrink.txt')
         challenge_name = "Truth or drink"
-    elif position == 4 or position == 11 or position == 18:
+    elif position == 4 or position == 13 or position == 18:
         call = challenges('generalknowledgeq.txt')
         challenge_name = "General knowledge"
     elif position == 2 or position == 20:
@@ -94,20 +91,20 @@ def tiles(position):
         call = "Step away from others with the computer for a second to see the question - it's of the upmost importance that others don't see the question!!!"
         call = challenges('paranoia.txt')
         challenge_name = "Paranoia"
-    elif position == 5 or position == 15 or position == 19:
+    elif position == 8 or position == 15 or position == 19:
         call = challenges('dareordrink.txt')
         challenge_name = "Dare or drink"
-    elif position == 6 or position == 14:
+    elif position == 6 or position == 12:
         call = challenges('neverhaveiever.txt')
         challenge_name = "Never have I ever"
-    elif position == 7 or position == 12 or position == 17:
+    elif position == 7 or position == 14 or position == 17:
         call = challenges_baila_title('baila.txt')
         call = challenges_baila_explanation('baila.txt')
         challenge_name = "Baila"
-    elif position == 8:
+    elif position == 5:
         call = "LUCKY YOU! You can rest right now and not drink."
         challenge_name = "LUCKY"
-    elif position == 13:
+    elif position == 11:
         call = "Down your drink right this second and go get yourself a new one."
         challenge_name = "CHUG"
     return call, challenge_name
@@ -138,7 +135,10 @@ paranoia_image = pygame.image.load('paranoiatile.jpg')
 paranoia_image = pygame.transform.scale(paranoia_image, (tile_width, tile_height))
 generalknowledge_image = pygame.image.load('generalknowledgetile.jpg')
 generalknowledge_image = pygame.transform.scale(generalknowledge_image, (tile_width, tile_height))
-
+start_image = pygame.image.load('start.jpg')
+start_image = pygame.transform.scale(start_image, (tile_width, tile_height))
+finish_image = pygame.image.load('finish.jpg')
+finish_image = pygame.transform.scale(finish_image, (tile_width, tile_height))
 
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
@@ -160,29 +160,35 @@ def draw_game_board(position):
         if i in [1, 10, 16]:  
             screen.blit(truthordrink_image, (x, y))
         
-        elif i in [5, 15, 19]:
+        elif i in [8, 15, 19]:
             screen.blit(dareordrink_image, (x, y))
         
-        elif i in [13]:
+        elif i in [11]:
             screen.blit(downyourdrink_image, (x, y))
         
-        elif i in [7, 12, 17]:
+        elif i in [7, 14, 17]:
             screen.blit(baila_image, (x, y))
         
         elif i in [2, 20]:
             screen.blit(everybody_drink_image, (x, y))
 
-        elif i in [6, 14]:
+        elif i in [6, 12]:
             screen.blit(neverhaveiever_image, (x, y))
         
-        elif i in [8]:
+        elif i in [5]:
             screen.blit(lucky_you_image, (x,y))
         
         elif i in [3, 9]:
             screen.blit(paranoia_image, (x, y))
         
-        elif i in [4, 11, 18]:
+        elif i in [4, 13, 18]:
             screen.blit(generalknowledge_image, (x, y))
+
+        elif i in [0]:
+            screen.blit(start_image, (x, y))
+
+        elif i in [21]:
+            screen.blit(finish_image, (x, y))
 
         else:
             pygame.draw.rect(screen, BLACK, (x, y, tile_width, tile_height), 3)
