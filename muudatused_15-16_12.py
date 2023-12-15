@@ -316,15 +316,31 @@ def play_game():
                             steps = roll_dice()
                             print(f"You rolled {steps}.")
                             position += steps
+                            new_position = position 
+                            if new_position >= len(board_shape) - 1:
+                                new_position = len(board_shape) - 1  
+
+                            position = new_position
                             dice_rolled = True
                             challenge_text, challenge_name = tiles(position)
                             
+                            screen.blit(game_image, (0, 0))
                             draw_game_board(position)
-                            pygame.display.flip()
-                            pygame.time.delay(1000)
+
+       
+                            dot_x = start_x + (position % 5) * (tile_width + tile_margin) + tile_width / 2
+                            dot_y = start_y + (position // 5) * (tile_height + tile_margin) + tile_height / 2
                             
+
+        
+                            pygame.draw.circle(screen, (255, 0, 0), (int(dot_x), int(dot_y)), 15)
+                            
+                            pygame.display.flip()
+                            pygame.time.delay(1200)
+                           
                             if challenge_text:
                                 
+
                                 display_popup(" ", challenge_text, challenge_name)
                                 pygame.display.flip()
                                 waiting_for_input = True

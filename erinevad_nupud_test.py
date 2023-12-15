@@ -319,6 +319,7 @@ def play_game():
                             dice_rolled = True
                             challenge_text, challenge_name = tiles(position)
                             if challenge_text:
+                                
                                 display_popup(" ", challenge_text, challenge_name)
                                 pygame.display.flip()
                                 waiting_for_input = True
