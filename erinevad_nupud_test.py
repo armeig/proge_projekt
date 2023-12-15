@@ -81,17 +81,17 @@ def tiles(position):
     if position == 1 or position == 10 or position == 16:
         call = challenges('truthordrink.txt')
         challenge_name = "Truth or drink"
-    elif position == 4 or position == 13 or position == 18:
+    elif position == 5 or position == 13 or position == 2:
         call = challenges('generalknowledgeq.txt')
         challenge_name = "General knowledge"
-    elif position == 2 or position == 20:
+    elif position == 9 or position == 20:
         call = "EVERYBODY DRINKS!"
         challenge_name = "EVERYBODY DRINKS!"
-    elif position == 3 or position == 9:
+    elif position == 3 or position == 15:
         call = "Step away from others with the computer for a second to see the question - it's of the upmost importance that others don't see the question!!!"
         call = challenges('paranoia.txt')
         challenge_name = "Paranoia"
-    elif position == 8 or position == 15 or position == 19:
+    elif position == 8 or position == 4 or position == 19:
         call = challenges('dareordrink.txt')
         challenge_name = "Dare or drink"
     elif position == 6 or position == 12:
@@ -101,7 +101,7 @@ def tiles(position):
         call = challenges_baila_title('baila.txt')
         call = challenges_baila_explanation('baila.txt')
         challenge_name = "Baila"
-    elif position == 5:
+    elif position == 18:
         call = "LUCKY YOU! You can rest right now and not drink."
         challenge_name = "LUCKY"
     elif position == 11:
@@ -160,7 +160,7 @@ def draw_game_board(position):
         if i in [1, 10, 16]:  
             screen.blit(truthordrink_image, (x, y))
         
-        elif i in [8, 15, 19]:
+        elif i in [8, 4, 19]:
             screen.blit(dareordrink_image, (x, y))
         
         elif i in [11]:
@@ -169,19 +169,19 @@ def draw_game_board(position):
         elif i in [7, 14, 17]:
             screen.blit(baila_image, (x, y))
         
-        elif i in [2, 20]:
+        elif i in [9, 20]:
             screen.blit(everybody_drink_image, (x, y))
 
         elif i in [6, 12]:
             screen.blit(neverhaveiever_image, (x, y))
         
-        elif i in [5]:
+        elif i in [18]:
             screen.blit(lucky_you_image, (x,y))
         
-        elif i in [3, 9]:
+        elif i in [3, 15]:
             screen.blit(paranoia_image, (x, y))
         
-        elif i in [4, 13, 18]:
+        elif i in [5, 13, 2]:
             screen.blit(generalknowledge_image, (x, y))
         
         elif i in [21]:
@@ -206,12 +206,13 @@ def draw_game_board(position):
 
 def display_popup2(title, text, challenge_name):
     screen.fill((255, 255, 255))
-    pygame.draw.rect(screen, (0, 0, 0), (200, 200, 600, 400))
+    screen.blit(game_image, (0, 0))
+    pygame.draw.rect(screen, (251, 255, 243), (200, 200, 600, 400))
     font_title = pygame.font.Font(None, 40)
     font_challenge_name = pygame.font.Font(None, 40)  
     font_text = pygame.font.Font(None, 27)
-    title_text = font_title.render(title, True, (255, 255, 255))
-    challenge_name_text = font_challenge_name.render(challenge_name, True, (255, 255, 255))  
+    title_text = font_title.render(title, True, (0, 0, 0))
+    challenge_name_text = font_challenge_name.render(challenge_name, True, (0, 0, 0))  
     #text_text = font_title.render(text, True, (255, 255, 255))
     screen.blit(title_text, (500 - title_text.get_width() // 2, 250))
     screen.blit(challenge_name_text, (210, 210))  
@@ -222,7 +223,7 @@ def display_popup2(title, text, challenge_name):
     screen_width = screen.get_width()
 
     for line in wrapped_text.split('\n'):
-        rendered_line = font_text.render(line, True, (255, 255, 255))
+        rendered_line = font_text.render(line, True, (0, 0, 0))
         #screen.blit(rendered_line, (220, y_offset))
         line_width = rendered_line.get_width()
         x_coordinate = (screen_width - line_width) // 2
@@ -232,12 +233,13 @@ def display_popup2(title, text, challenge_name):
 
 def display_popup(title, text, challenge_name):
     screen.fill((255, 255, 255))
-    pygame.draw.rect(screen, (0, 0, 0), (200, 200, 600, 400))
+    screen.blit(game_image, (0, 0))
+    pygame.draw.rect(screen, (251, 255, 243), (200, 200, 600, 400))
     font_title = pygame.font.Font(None, 36)
     font_challenge_name = pygame.font.Font(None, 40)  
     font_text = pygame.font.Font(None, 30)
-    title_text = font_title.render(title, True, (255, 255, 255))
-    challenge_name_text = font_challenge_name.render(challenge_name, True, (255, 255, 255))  
+    title_text = font_title.render(title, True, (0, 0, 0))
+    challenge_name_text = font_challenge_name.render(challenge_name, True, (0, 0, 0))  
     #text_text = font_title.render(text, True, (255, 255, 255))
     screen.blit(title_text, (400 - title_text.get_width() // 2, 250))
     screen.blit(challenge_name_text, (210, 210))  
@@ -248,7 +250,7 @@ def display_popup(title, text, challenge_name):
     screen_width = screen.get_width()
 
     for line in wrapped_text.split('\n'):
-        rendered_line = font_text.render(line, True, (255, 255, 255))
+        rendered_line = font_text.render(line, True, (0, 0, 0))
         #screen.blit(rendered_line, (220, y_offset))
         line_width = rendered_line.get_width()
         x_coordinate = (screen_width - line_width) // 2
