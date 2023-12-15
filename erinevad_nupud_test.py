@@ -25,7 +25,6 @@ def display_instructions():
     ...
     Press 's' and then click on the screen to start the game and let the laughter flow!
     """
-
 def challenges(file):
     how_many_lines = 0
     data = []
@@ -33,13 +32,51 @@ def challenges(file):
     for line in f:
         new = line.strip().split(': ')
         how_many_lines += 1
-        data.append([int(new[0]),new[1]])
+        data.append([int(new[0]), new[1]])
     f.close()
     number = random.randint(1, how_many_lines)
     for pair in data:
         if number == pair[0]:
             question = pair[1]
     return question
+
+
+def challenges_baila_title(file):
+    how_many_lines = 0
+    data = []
+    f = open(file, encoding='UTF-8')
+    for line in f:
+        new = line.strip().split(': ')
+        how_many_lines += 1
+        title_and_explanation = new[1]
+        to_get_the_title = title_and_explanation.split(' . ')
+        data.append([int(new[0]), to_get_the_title[0], to_get_the_title[1]])
+    f.close()
+    number = random.randint(1, how_many_lines)
+    for trio in data:
+        if number == trio[0]:
+            baila_title = trio[1]
+    return baila_title
+
+def challenges_baila_explanation(file):
+    how_many_lines = 0
+    data = []
+    f = open(file, encoding='UTF-8')
+    for line in f:
+        new = line.strip().split(': ')
+        how_many_lines += 1
+        title_and_explanation = new[1]
+        to_get_the_title = title_and_explanation.split(' . ')
+        data.append([int(new[0]), to_get_the_title[0], to_get_the_title[1]])
+    f.close()
+    number = random.randint(1, how_many_lines)
+    for trio in data:
+        if number == trio[0]:
+            explanation = trio[2]
+    return explanation
+
+
+
 
 def tiles(position):
     call = ""
@@ -64,7 +101,8 @@ def tiles(position):
         call = challenges('neverhaveiever.txt')
         challenge_name = "Never have I ever"
     elif position == 7 or position == 12 or position == 17:
-        call = challenges('baila.txt')
+        call = challenges_baila_title('baila.txt')
+        call = challenges_baila_explanation('baila.txt')
         challenge_name = "Baila"
     elif position == 8:
         call = "LUCKY YOU! You can rest right now and not drink."
@@ -104,6 +142,7 @@ generalknowledge_image = pygame.transform.scale(generalknowledge_image, (tile_wi
 
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
+GREEN = (251, 255, 243)
 clock = pygame.time.Clock()
 
 board_shape = [

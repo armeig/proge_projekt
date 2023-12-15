@@ -1,17 +1,17 @@
-1: 7
-2: Cheetah
-3: The blue whale
-4: 8
-5: 1890
-6: outstandingly bad; shocking
-7: 384400 kilometers
-8: The japanese word for freshwater eel
-9: 1 578 240 minutes
-10: Belcalis Marlenis Almánzar Cephus
-11: Blue
-12: Spanish and Guarani
-13: Pyongyang
-14: Ouagadougou
-15: Hanbok
-16: Millard Fillmore
-17: Brazil
+1: 7 
+2: Cheetah 
+3: The blue whale 
+4: 8 
+5: 1890 
+6: outstandingly bad; shocking 
+7: 384400 kilometers 
+8: The japanese word for freshwater eel 
+9: 1 578 240 minutes 
+10: Belcalis Marlenis Almánzar Cephus 
+11: Blue 
+12: Spanish and Guarani 
+13: Pyongyang 
+14: Ouagadougou 
+15: Hanbok 
+16: Millard Fillmore 
+17: Brazil 
