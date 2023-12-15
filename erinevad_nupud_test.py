@@ -240,7 +240,7 @@ def play_game():
     waiting_for_input = False
     button_x, button_y, button_width, button_height = 400, 600, 200, 200
     button2_x, button2_y, button2_width, button2_height = 350, 475, 300, 100
-    Green = (0, 204, 0)
+    Green = (251, 255, 243)
     
     try:
         while True:
