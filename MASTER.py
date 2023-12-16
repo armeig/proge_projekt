@@ -20,7 +20,15 @@ dice_image = pygame.transform.scale(dice_image, (200, 200))
 
 
 def display_instructions():
-    return "The player with the highest rice test score, rolls the dice first. To roll the dice, click on the dice. If the dice has been rolled, wait until the next screen with the challenge/question is displayed. The golden rule is the challenge is not complete until someone drinks. If at any point in the game you feel like you can’t drink anymore - just exchange alcohol with water. We do not encourage peer pressure! The aim of the game is to have fun! If you want to move on and there is no button, just click on the screen. In never have I ever you drink if you HAVE done it. HAVE FUN!"
+    return ("The player with the highest rice test score, rolls the dice first. "
+            "To roll the dice, click on the dice. If the dice has been rolled, "
+            "wait until the next screen with the challenge/question is displayed."
+            "The golden rule is the challenge is not complete until someone drinks. "
+            "If at any point in the game you feel like you cannott drink anymore - "
+            "just exchange alcohol with water."
+            "We do not encourage peer pressure! The aim of the game is to have fun! "
+            "If you want to move on and there is no button, just click on the screen. "
+            "In never have I ever you drink if you HAVE done it.HAVE FUN!")
 
 def challenges(file):
     how_many_lines = 0
@@ -229,12 +237,18 @@ def display_popup(title, text, challenge_name):
 def roll_dice():
     return random.randint(1, 6)
 
-def display_message(message, y_offset=0):
+def display_message(message, y_offset=0, center_x=500):
     font = pygame.font.Font(None, 24)
-    lines = message.strip().split("\n")
-    for i, line in enumerate(lines):
+    screen_width = 1000  
+    margin = 40  
+    available_width = screen_width - 2 * margin  
+
+    
+    wrapped_lines = textwrap.wrap(message, width=available_width)
+
+    for i, line in enumerate(wrapped_lines):
         text = font.render(line, True, BLACK)
-        text_rect = text.get_rect(center=(500, 100 + y_offset + i * 30))
+        text_rect = text.get_rect(center=(center_x, y_offset + i * 30))
         screen.blit(text, text_rect)
 
 def display_message2(message, y_offset=0):
@@ -358,10 +372,11 @@ def play_game():
 
 
             elif current_screen == RULES_SCREEN:
-                display_message(display_instructions(), y_offset=-50)
                 screen.blit(rules_image, (0, 0))
-                pygame.draw.rect(screen, Green, (button2_x, button2_y, button2_width, button2_height))  
-                text_surface = button_font.render("Start game", True, BLACK)  
+                instructions_text = display_instructions()
+                display_message(instructions_text, y_offset=50)  
+                pygame.draw.rect(screen, Green, (button2_x, button2_y, button2_width, button2_height))
+                text_surface = button_font.render("Start game", True, BLACK)
                 text_rect = text_surface.get_rect(center=(button2_x + button2_width // 2, button2_y + button2_height // 2))
                 screen.blit(text_surface, text_rect)
 
