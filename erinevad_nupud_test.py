@@ -7,16 +7,16 @@ TITLE_SCREEN = 0
 RULES_SCREEN = 1
 GAME_SCREEN = 2
 current_screen = TITLE_SCREEN
-tile_width = 120
-tile_height = 120
+tile_width = 100
+tile_height = 100
 tile_margin = 20
 
-start_x = 50
-start_y = 50
+start_x = 157
+start_y = 40
 
 
 dice_image = pygame.image.load('dicepic.png')
-dice_image = pygame.transform.scale(dice_image, (200, 200))
+dice_image = pygame.transform.scale(dice_image, (280, 280))
 
 
 def display_instructions():
@@ -110,13 +110,13 @@ def tiles(position):
     return call, challenge_name
 
 pygame.init()
-screen = pygame.display.set_mode((1000, 800))
+screen = pygame.display.set_mode((900, 700))
 mainpage_image = pygame.image.load('mainpage.jpg')
-mainpage_image = pygame.transform.scale(mainpage_image, (1000, 800))
+mainpage_image = pygame.transform.scale(mainpage_image, (900, 700))
 rules_image = pygame.image.load('background.jpg')
-rules_image = pygame.transform.scale(rules_image, (1000, 800))
+rules_image = pygame.transform.scale(rules_image, (900, 700))
 game_image = pygame.image.load('background.jpg')
-game_image = pygame.transform.scale(game_image, (1000, 800))
+game_image = pygame.transform.scale(game_image, (900, 700))
 truthordrink_image = pygame.image.load('truthordrinktile.jpg')
 truthordrink_image = pygame.transform.scale(truthordrink_image, (tile_width, tile_height))
 dareordrink_image = pygame.image.load('dareordrinktile.jpg')
@@ -201,15 +201,15 @@ def draw_game_board(position):
 def display_popup2(title, text, challenge_name):
     screen.fill((255, 255, 255))
     screen.blit(game_image, (0, 0))
-    pygame.draw.rect(screen, (251, 255, 243), (200, 200, 600, 400))
+    pygame.draw.rect(screen, (251, 255, 243), (100, 150, 700, 400))
     font_title = pygame.font.Font(None, 40)
     font_challenge_name = pygame.font.Font(None, 40)  
     font_text = pygame.font.Font(None, 27)
     title_text = font_title.render(title, True, (0, 0, 0))
     challenge_name_text = font_challenge_name.render(challenge_name, True, (0, 0, 0))  
     #text_text = font_title.render(text, True, (255, 255, 255))
-    screen.blit(title_text, (500 - title_text.get_width() // 2, 250))
-    screen.blit(challenge_name_text, (210, 210))  
+    screen.blit(title_text, (400 - title_text.get_width() // 2, 250))
+    screen.blit(challenge_name_text, (150, 190))  
     #screen.blit(text_text, (400 - text_text.get_width() // 2, 300))
 
     wrapped_text = textwrap.fill(text, width=50)  
@@ -228,7 +228,7 @@ def display_popup2(title, text, challenge_name):
 def display_popup(title, text, challenge_name):
     screen.fill((255, 255, 255))
     screen.blit(game_image, (0, 0))
-    pygame.draw.rect(screen, (251, 255, 243), (200, 200, 600, 400))
+    pygame.draw.rect(screen, (251, 255, 243), (100, 150, 700, 400))
     font_title = pygame.font.Font(None, 36)
     font_challenge_name = pygame.font.Font(None, 40)  
     font_text = pygame.font.Font(None, 30)
@@ -236,7 +236,7 @@ def display_popup(title, text, challenge_name):
     challenge_name_text = font_challenge_name.render(challenge_name, True, (0, 0, 0))  
     #text_text = font_title.render(text, True, (255, 255, 255))
     screen.blit(title_text, (400 - title_text.get_width() // 2, 250))
-    screen.blit(challenge_name_text, (210, 210))  
+    screen.blit(challenge_name_text, (150, 190))  
     #screen.blit(text_text, (400 - text_text.get_width() // 2, 300))
 
     wrapped_text = textwrap.fill(text, width=50)  
@@ -259,7 +259,7 @@ def display_message(message, y_offset=0):
     lines = message.strip().split("\n")
     for i, line in enumerate(lines):
         text = font.render(line, True, BLACK)
-        text_rect = text.get_rect(center=(500, 100 + y_offset + i * 30))
+        text_rect = text.get_rect(center=(100, 50 + y_offset + i * 30))
         screen.blit(text, text_rect)
 
 def display_message2(message, y_offset=0):
@@ -285,8 +285,8 @@ def play_game():
     win_time = None
     show_popup = False
     waiting_for_input = False
-    button_x, button_y, button_width, button_height = 400, 600, 200, 200
-    button2_x, button2_y, button2_width, button2_height = 350, 475, 300, 100
+    button_x, button_y, button_width, button_height = 400, 475, 280, 280
+    button2_x, button2_y, button2_width, button2_height = 350, 450, 200, 100
     Green = (251, 255, 243)
     button_font = pygame.font.Font(None, 36)
     
@@ -333,7 +333,7 @@ def play_game():
                     if position >= len(board_shape) - 1:
                         position = len(board_shape) - 1
                         game_won = True
-                        win_time = pygame.time.get_ticks()
+                        
 
                 if game_won:
                     victory_title = "Congratulations!"
@@ -350,7 +350,7 @@ def play_game():
                                 sys.exit()
                             elif event.type == pygame.MOUSEBUTTONDOWN or event.type == pygame.KEYDOWN:
                                 waiting_for_input = False
-                        break
+                        
 
             if current_screen == TITLE_SCREEN:
                 screen.blit(mainpage_image, (0, 0))
@@ -378,7 +378,6 @@ def play_game():
                 pygame.draw.circle(screen, (255, 0, 0), (int(dot_x), int(dot_y)), 15)
 
             pygame.display.flip()
-            clock.tick(60)
 
     except KeyboardInterrupt:
         pygame.quit()
