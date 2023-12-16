@@ -222,7 +222,7 @@ def display_popup2(title, text, challenge_name):
     title_text = font_title.render(title, True, (0, 0, 0))
     challenge_name_text = font_challenge_name.render(challenge_name, True, (0, 0, 0))  
     #text_text = font_title.render(text, True, (255, 255, 255))
-    screen.blit(title_text, (400 - title_text.get_width() // 2, 250))
+    screen.blit(title_text, (450 - title_text.get_width() // 2, 300))
     screen.blit(challenge_name_text, (150, 190))  
     #screen.blit(text_text, (400 - text_text.get_width() // 2, 300))
 
@@ -253,7 +253,7 @@ def display_popup(title, text, challenge_name):
     #screen.blit(text_text, (400 - text_text.get_width() // 2, 300))
 
     wrapped_text = textwrap.fill(text, width=50)  
-    y_offset = 350
+    y_offset = 300
     screen_width = screen.get_width()
 
     for line in wrapped_text.split('\n'):
