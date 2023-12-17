@@ -7,20 +7,28 @@ TITLE_SCREEN = 0
 RULES_SCREEN = 1
 GAME_SCREEN = 2
 current_screen = TITLE_SCREEN
-tile_width = 120
-tile_height = 120
+tile_width = 100
+tile_height = 100
 tile_margin = 20
 
-start_x = 50
-start_y = 50
+start_x = 157
+start_y = 40
 
 
 dice_image = pygame.image.load('dicepic.png')
-dice_image = pygame.transform.scale(dice_image, (200, 200))
+dice_image = pygame.transform.scale(dice_image, (280, 280))
 
 
 def display_instructions():
-    return "The player with the highest rice test score, rolls the dice first. To roll the dice, click on the dice. If the dice has been rolled, wait until the next screen with the challenge/question is displayed. The golden rule is the challenge is not complete until someone drinks. If at any point in the game you feel like you can’t drink anymore - just exchange alcohol with water. We do not encourage peer pressure! The aim of the game is to have fun! If you want to move on and there is no button, just click on the screen. In never have I ever you drink if you HAVE done it. HAVE FUN!"
+    return ("The player with the highest rice test score, rolls the dice first. "
+            "To roll the dice, click on the dice. If the dice has been rolled, "
+            "wait until the next screen with the challenge/question is displayed."
+            "The golden rule is the challenge is not complete until someone drinks. "
+            "If at any point in the game you feel like you cannott drink anymore - "
+            "just exchange alcohol with water."
+            "We do not encourage peer pressure! The aim of the game is to have fun! "
+            "If you want to move on and there is no button, just click on the screen. "
+            "In never have I ever you drink if you HAVE done it.HAVE FUN!")
 
 def challenges(file):
     how_many_lines = 0
@@ -78,12 +86,14 @@ def challenges_baila_explanation(file):
 def tiles(position):
     call = ""
     challenge_name = ""
+    answer = None
     if position == 1 or position == 10 or position == 16:
         call = challenges('truthordrink.txt')
         challenge_name = "Truth or drink"
-    elif position == 4 or position == 13 or position == 18:
-        call = challenges('generalknowledgeq.txt')
-        challenge_name = "General knowledge"
+    elif position in [4, 13, 18]:
+        question, answer = challenges_q_and_a('generalknowledgeq.txt', 'generalknowledgea.txt')
+        call = question  
+        challenge_name = "General knowledge"        
     elif position == 2 or position == 20:
         call = "EVERYBODY DRINKS!"
         challenge_name = "EVERYBODY DRINKS!"
@@ -107,16 +117,16 @@ def tiles(position):
     elif position == 11:
         call = "Down your drink right this second and go get yourself a new one."
         challenge_name = "CHUG"
-    return call, challenge_name
+    return call, challenge_name, answer
 
 pygame.init()
-screen = pygame.display.set_mode((1000, 800))
+screen = pygame.display.set_mode((900, 700))
 mainpage_image = pygame.image.load('mainpage.jpg')
-mainpage_image = pygame.transform.scale(mainpage_image, (1000, 800))
+mainpage_image = pygame.transform.scale(mainpage_image, (900, 700))
 rules_image = pygame.image.load('background.jpg')
-rules_image = pygame.transform.scale(rules_image, (1000, 800))
+rules_image = pygame.transform.scale(rules_image, (900, 700))
 game_image = pygame.image.load('background.jpg')
-game_image = pygame.transform.scale(game_image, (1000, 800))
+game_image = pygame.transform.scale(game_image, (900, 700))
 truthordrink_image = pygame.image.load('truthordrinktile.jpg')
 truthordrink_image = pygame.transform.scale(truthordrink_image, (tile_width, tile_height))
 dareordrink_image = pygame.image.load('dareordrinktile.jpg')
@@ -204,17 +214,32 @@ def draw_game_board(position):
             text_y = y + (tile_height - text.get_height()) / 2
             screen.blit(text, (text_x, text_y))
 
+def challenges_q_and_a(question_file, answer_file):
+    question_data = []
+    answer_data = []
+    with open(question_file, encoding='UTF-8') as f:
+        question_data = [line.strip() for line in f]
+    with open(answer_file, encoding='UTF-8') as f:
+        answer_data = [line.strip() for line in f]
+
+    if len(question_data) != len(answer_data):
+        raise ValueError("The number of questions and answers do not match")
+
+    number = random.randint(0, len(question_data) - 1)
+    return question_data[number], answer_data[number]
+
 def display_popup2(title, text, challenge_name):
     screen.fill((255, 255, 255))
-    pygame.draw.rect(screen, (0, 0, 0), (200, 200, 600, 400))
+    screen.blit(game_image, (0, 0))
+    pygame.draw.rect(screen, (251, 255, 243), (100, 150, 700, 400))
     font_title = pygame.font.Font(None, 40)
     font_challenge_name = pygame.font.Font(None, 40)  
     font_text = pygame.font.Font(None, 27)
-    title_text = font_title.render(title, True, (255, 255, 255))
-    challenge_name_text = font_challenge_name.render(challenge_name, True, (255, 255, 255))  
+    title_text = font_title.render(title, True, (0, 0, 0))
+    challenge_name_text = font_challenge_name.render(challenge_name, True, (0, 0, 0))  
     #text_text = font_title.render(text, True, (255, 255, 255))
-    screen.blit(title_text, (500 - title_text.get_width() // 2, 250))
-    screen.blit(challenge_name_text, (210, 210))  
+    screen.blit(title_text, (450 - title_text.get_width() // 2, 300))
+    screen.blit(challenge_name_text, (150, 190))  
     #screen.blit(text_text, (400 - text_text.get_width() // 2, 300))
 
     wrapped_text = textwrap.fill(text, width=50)  
@@ -222,7 +247,7 @@ def display_popup2(title, text, challenge_name):
     screen_width = screen.get_width()
 
     for line in wrapped_text.split('\n'):
-        rendered_line = font_text.render(line, True, (255, 255, 255))
+        rendered_line = font_text.render(line, True, (0, 0, 0))
         #screen.blit(rendered_line, (220, y_offset))
         line_width = rendered_line.get_width()
         x_coordinate = (screen_width - line_width) // 2
@@ -232,25 +257,24 @@ def display_popup2(title, text, challenge_name):
 
 def display_popup(title, text, challenge_name):
     screen.fill((255, 255, 255))
-    pygame.draw.rect(screen, (0, 0, 0), (200, 200, 600, 400))
+    screen.blit(game_image, (0, 0))
+    pygame.draw.rect(screen, (251, 255, 243), (100, 150, 700, 400))
     font_title = pygame.font.Font(None, 36)
     font_challenge_name = pygame.font.Font(None, 40)  
     font_text = pygame.font.Font(None, 30)
-    title_text = font_title.render(title, True, (255, 255, 255))
-    challenge_name_text = font_challenge_name.render(challenge_name, True, (255, 255, 255))  
-    #text_text = font_title.render(text, True, (255, 255, 255))
+    title_text = font_title.render(title, True, (0, 0, 0))
+    challenge_name_text = font_challenge_name.render(challenge_name, True, (0, 0, 0))  
     screen.blit(title_text, (400 - title_text.get_width() // 2, 250))
-    screen.blit(challenge_name_text, (210, 210))  
+    screen.blit(challenge_name_text, (150, 190))  
     #screen.blit(text_text, (400 - text_text.get_width() // 2, 300))
 
     wrapped_text = textwrap.fill(text, width=50)  
-    y_offset = 350
+    y_offset = 300
     screen_width = screen.get_width()
 
     for line in wrapped_text.split('\n'):
-        rendered_line = font_text.render(line, True, (255, 255, 255))
-        #screen.blit(rendered_line, (220, y_offset))
-        line_width = rendered_line.get_width()
+        rendered_line = font_text.render(line, True, (0, 0, 0))
+        line_width = rendered_line.get_width()  
         x_coordinate = (screen_width - line_width) // 2
         screen.blit(rendered_line, (x_coordinate, y_offset))
         y_offset += font_text.get_linesize()
@@ -258,12 +282,18 @@ def display_popup(title, text, challenge_name):
 def roll_dice():
     return random.randint(1, 6)
 
-def display_message(message, y_offset=0):
+def display_message(message, y_offset=0, center_x=500):
     font = pygame.font.Font(None, 24)
-    lines = message.strip().split("\n")
-    for i, line in enumerate(lines):
+    screen_width = 1000  
+    margin = 40  
+    available_width = screen_width - 2 * margin  
+
+    
+    wrapped_lines = textwrap.wrap(message, width=available_width)
+
+    for i, line in enumerate(wrapped_lines):
         text = font.render(line, True, BLACK)
-        text_rect = text.get_rect(center=(500, 100 + y_offset + i * 30))
+        text_rect = text.get_rect(center=(100, 50 + y_offset + i * 30))
         screen.blit(text, text_rect)
 
 def display_message2(message, y_offset=0):
@@ -275,72 +305,51 @@ def display_message2(message, y_offset=0):
         screen.blit(text, text_rect)
 
 
-
 def play_game():
     global current_screen
     
     position = 0
     dice_rolled = False
     game_won = False
-    game_started = False
-    welcome_screen = True
-    instructions_screen = False
-    instructions = display_instructions()
-    win_time = None
-    show_popup = False
-    waiting_for_input = False
-    button_x, button_y, button_width, button_height = 400, 600, 200, 200
-    button2_x, button2_y, button2_width, button2_height = 350, 475, 300, 100
+    show_question = False
+    show_answer = False
+    current_question = ""
+    current_answer = ""
+    button_x, button_y, button_width, button_height = 400, 475, 280, 280
+    button2_x, button2_y, button2_width, button2_height = 350, 450, 200, 100
     Green = (251, 255, 243)
     button_font = pygame.font.Font(None, 36)
-    
-    try:
-        while True:
-            screen.fill(WHITE)
-            
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                    sys.exit()
-                elif event.type == pygame.MOUSEBUTTONDOWN:
-                    mouse_x, mouse_y = event.pos
-                    if current_screen in [TITLE_SCREEN, RULES_SCREEN]:
-                        if button2_x <= mouse_x <= button2_x + button2_width and button2_y <= mouse_y <= button2_y + button2_height:
-                            if current_screen == TITLE_SCREEN:
-                                current_screen = RULES_SCREEN
-                            elif current_screen == RULES_SCREEN:
-                                current_screen = GAME_SCREEN
 
-                    elif current_screen == GAME_SCREEN:
-                        if button_x <= mouse_x <= button_x + button_width and button_y <= mouse_y <= button_y + button_height:
-                            steps = roll_dice()
-                            print(f"You rolled {steps}.")
-                            position += steps
-                            new_position = position 
-                            if new_position >= len(board_shape) - 1:
-                                new_position = len(board_shape) - 1  
-
-                            position = new_position
-                            dice_rolled = True
-                            challenge_text, challenge_name = tiles(position)
-                            
-                            screen.blit(game_image, (0, 0))
-                            draw_game_board(position)
-
-       
-                            dot_x = start_x + (position % 5) * (tile_width + tile_margin) + tile_width / 2
-                            dot_y = start_y + (position // 5) * (tile_height + tile_margin) + tile_height / 2
-                            
-
+    while True:
+        screen.fill(WHITE)
         
-                            pygame.draw.circle(screen, (255, 0, 0), (int(dot_x), int(dot_y)), 15)
-                            
-                            pygame.display.flip()
-                            pygame.time.delay(1200)
-                           
-                            if challenge_text:
-                                
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_x, mouse_y = event.pos
+                if current_screen in [TITLE_SCREEN, RULES_SCREEN]:
+                    if button2_x <= mouse_x <= button2_x + button2_width and button2_y <= mouse_y <= button2_y + button2_height:
+                        if current_screen == TITLE_SCREEN:
+                            current_screen = RULES_SCREEN
+                        elif current_screen == RULES_SCREEN:
+                            current_screen = GAME_SCREEN
 
+                elif current_screen == GAME_SCREEN:
+                    if button_x <= mouse_x <= button_x + button_width and button_y <= mouse_y <= button_y + button_height:
+                        steps = roll_dice()
+                        print(f"You rolled {steps}.")
+                        position += steps
+                        if position >= len(board_shape) - 1:
+                            position = len(board_shape) - 1
+
+                            challenge_text, challenge_name, answer = tiles(position)
+                            if challenge_name == "General knowledge":
+                                current_question = challenge_text
+                                current_answer = answer
+                                show_question = True
+                            else:
                                 display_popup(" ", challenge_text, challenge_name)
                                 pygame.display.flip()
                                 waiting_for_input = True
@@ -352,63 +361,64 @@ def play_game():
                                         elif sub_event.type == pygame.MOUSEBUTTONDOWN or sub_event.type == pygame.KEYDOWN:
                                             waiting_for_input = False
 
-                if dice_rolled:
-                    pygame.draw.circle(screen, (0, 0, 255), (position % 11 * 80 + 50, position // 11 * 80 + 50), 10)
-                    dice_rolled = False
-
-                    if position >= len(board_shape) - 1:
-                        position = len(board_shape) - 1
-                        game_won = True
-                        win_time = pygame.time.get_ticks()
-
-                if game_won:
-                    victory_title = "Congratulations!"
-                    victory_text = "You have won the game!"
-                    victory_challenge_name = "VICTORY"
-                    display_popup2(victory_title, victory_text, victory_challenge_name)
-                    pygame.display.flip()
-                    
-                    waiting_for_input = True
-                    while waiting_for_input:
-                        for event in pygame.event.get():
-                            if event.type == pygame.QUIT:
-                                pygame.quit()
-                                sys.exit()
-                            elif event.type == pygame.MOUSEBUTTONDOWN or event.type == pygame.KEYDOWN:
-                                waiting_for_input = False
-                        break
-
-            if current_screen == TITLE_SCREEN:
-                screen.blit(mainpage_image, (0, 0))
-                pygame.draw.rect(screen, Green, (button2_x, button2_y, button2_width, button2_height))
-                text_surface = button_font.render("Start", True, BLACK)  
-                text_rect = text_surface.get_rect(center=(button2_x + button2_width // 2, button2_y + button2_height // 2))
-                screen.blit(text_surface, text_rect)
-
-
-            elif current_screen == RULES_SCREEN:
-                display_message(display_instructions(), y_offset=-50)
-                screen.blit(rules_image, (0, 0))
-                pygame.draw.rect(screen, Green, (button2_x, button2_y, button2_width, button2_height))  
-                text_surface = button_font.render("Start game", True, BLACK)  
-                text_rect = text_surface.get_rect(center=(button2_x + button2_width // 2, button2_y + button2_height // 2))
-                screen.blit(text_surface, text_rect)
-
-
-            elif current_screen == GAME_SCREEN:
-                screen.blit(game_image, (0, 0))
-                draw_game_board(position)
-                screen.blit(dice_image, (button_x, button_y))
-                dot_x = start_x + (position % 5) * (tile_width + tile_margin) + tile_width / 2
-                dot_y = start_y + (position // 5) * (tile_height + tile_margin) + tile_height / 2
-                pygame.draw.circle(screen, (255, 0, 0), (int(dot_x), int(dot_y)), 15)
-
+        if show_question:
+            display_popup("Question", current_question, "General Knowledge")
             pygame.display.flip()
-            clock.tick(60)
+            show_question = False
+            show_answer = True
 
-    except KeyboardInterrupt:
-        pygame.quit()
-        sys.exit()
+        if show_answer:
+            for event in pygame.event.get():
+                if event.type == pygame.MOUSEBUTTONDOWN or event.type == pygame.KEYDOWN:
+                    display_popup("Answer", current_answer, "General Knowledge")
+                    pygame.display.flip()
+                    show_answer = False
+
+        if current_screen == TITLE_SCREEN:
+            screen.blit(mainpage_image, (0, 0))
+            pygame.draw.rect(screen, Green, (button2_x, button2_y, button2_width, button2_height))
+            text_surface = button_font.render("Start", True, BLACK)
+            text_rect = text_surface.get_rect(center=(button2_x + button2_width // 2, button2_y + button2_height // 2))
+            screen.blit(text_surface, text_rect)
+
+        elif current_screen == RULES_SCREEN:
+            screen.blit(rules_image, (0, 0))
+            instructions_text = display_instructions()
+            display_message(instructions_text, y_offset=50)
+            pygame.draw.rect(screen, Green, (button2_x, button2_y, button2_width, button2_height))
+            text_surface = button_font.render("Start game", True, BLACK)
+            text_rect = text_surface.get_rect(center=(button2_x + button2_width // 2, button2_y + button2_height // 2))
+            screen.blit(text_surface, text_rect)
+
+        elif current_screen == GAME_SCREEN:
+            screen.blit(game_image, (0, 0))
+            draw_game_board(position)
+            screen.blit(dice_image, (button_x, button_y))
+            dot_x = start_x + (position % 5) * (tile_width + tile_margin) + tile_width / 2
+            dot_y = start_y + (position // 5) * (tile_height + tile_margin) + tile_height / 2
+            pygame.draw.circle(screen, (255, 0, 0), (int(dot_x), int(dot_y)), 15)
+
+        if game_won:
+            victory_title = "Congratulations!"
+            victory_text = "You have won the game!"
+            victory_challenge_name = "VICTORY"
+            display_popup2(victory_title, victory_text, victory_challenge_name)
+            pygame.display.flip()
+
+            waiting_for_input = True
+            while waiting_for_input:
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        pygame.quit()
+                        sys.exit()
+                    elif event.type is pygame.MOUSEBUTTONDOWN or event.type is pygame.KEYDOWN:
+                        waiting_for_input = False
+
+        pygame.display.flip()
+
+    
+        
+        
 
 if __name__ == "__main__":
     play_game()
