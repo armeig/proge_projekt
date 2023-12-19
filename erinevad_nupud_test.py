@@ -20,7 +20,7 @@ dice_image = pygame.transform.scale(dice_image, (280, 280))
 
 
 def display_instructions():
-    return "The player with the highest rice test score, rolls the dice first. To roll the dice, click on the dice. If the dice has been rolled, wait until the next screen with the challenge/question is displayed. The golden rule is the challenge is not complete until someone drinks. If at any point in the game you feel like you can’t drink anymore - just exchange alcohol with water. We do not encourage peer pressure! The aim of the game is to have fun! If you want to move on and there is no button, just click on the screen. In never have I ever you drink if you HAVE done it. HAVE FUN!"
+    return "The player with the highest rice test score, rolls the dice first." + "\n" + "To roll the dice, click on the dice. If the dice has been rolled," + "\n" + "wait until the next screen with the challenge/question is displayed." + "\n" + "The golden rule is the challenge is not complete until someone drinks." + "\n" + "If at any point in the game you feel like you can’t drink anymore - " + "\n" + "just exchange alcohol with water. We do not encourage peer pressure!" + "\n" + "The aim of the game is to have fun!" + "\n" + "If you want to move on and there is no button, just click on the screen." + "\n" + "In never have I ever you drink if you HAVE done it." + "\n" + "HAVE FUN!"
 
 def challenges(file):
     how_many_lines = 0
@@ -208,7 +208,7 @@ def display_popup2(title, text, challenge_name):
     title_text = font_title.render(title, True, (0, 0, 0))
     challenge_name_text = font_challenge_name.render(challenge_name, True, (0, 0, 0))  
     #text_text = font_title.render(text, True, (255, 255, 255))
-    screen.blit(title_text, (400 - title_text.get_width() // 2, 250))
+    screen.blit(title_text, (450 - title_text.get_width() // 2, 300))
     screen.blit(challenge_name_text, (150, 190))  
     #screen.blit(text_text, (400 - text_text.get_width() // 2, 300))
 
@@ -235,12 +235,12 @@ def display_popup(title, text, challenge_name):
     title_text = font_title.render(title, True, (0, 0, 0))
     challenge_name_text = font_challenge_name.render(challenge_name, True, (0, 0, 0))  
     #text_text = font_title.render(text, True, (255, 255, 255))
-    screen.blit(title_text, (400 - title_text.get_width() // 2, 250))
+    screen.blit(title_text, (400 - title_text.get_width() // 2, 150))
     screen.blit(challenge_name_text, (150, 190))  
     #screen.blit(text_text, (400 - text_text.get_width() // 2, 300))
 
     wrapped_text = textwrap.fill(text, width=50)  
-    y_offset = 350
+    y_offset = 300
     screen_width = screen.get_width()
 
     for line in wrapped_text.split('\n'):
@@ -267,7 +267,7 @@ def display_message2(message, y_offset=0):
     lines = message.strip().split("\n")
     for i, line in enumerate(lines):
         text = font.render(line, True, BLACK)
-        text_rect = text.get_rect(center=(500, 400 + y_offset + i * 30))
+        text_rect = text.get_rect(center=(400, 400 + y_offset + i * 30))
         screen.blit(text, text_rect)
 
 
