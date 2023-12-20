@@ -15,7 +15,7 @@ start_x = 157
 start_y = 40
 
 
-dice_image = pygame.image.load('dicepic.png')
+dice_image = pygame.image.load('pics/dicepic.png')
 dice_image = pygame.transform.scale(dice_image, (280, 280))
 RED = (255, 0, 0)
 
@@ -23,7 +23,7 @@ def display_message(lines, top_left_x, top_left_y, font_size=30):
     font = pygame.font.Font(None, font_size)
     
     for i, line in enumerate(lines):
-        text_surface = font.render(line, True, RED)
+        text_surface = font.render(line, True, BLACK)
         screen.blit(text_surface, (top_left_x, top_left_y + i * font_size))
 
 
@@ -49,106 +49,58 @@ def challenges(file):
     return question
 
 
-def challenges_baila_title(file):
-    how_many_lines = 0
-    data = []
-    f = open(file, encoding='UTF-8')
-    for line in f:
-        new = line.strip().split(': ')
-        how_many_lines += 1
-        title_and_explanation = new[1]
-        to_get_the_title = title_and_explanation.split(' . ')
-        data.append([int(new[0]), to_get_the_title[0], to_get_the_title[1]])
-    f.close()
-    number = random.randint(1, how_many_lines)
-    for trio in data:
-        if number == trio[0]:
-            baila_title = trio[1]
-    return baila_title
-
-def challenges_baila_explanation(file):
-    how_many_lines = 0
-    data = []
-    f = open(file, encoding='UTF-8')
-    for line in f:
-        new = line.strip().split(': ')
-        how_many_lines += 1
-        title_and_explanation = new[1]
-        to_get_the_title = title_and_explanation.split(' . ')
-        data.append([int(new[0]), to_get_the_title[0], to_get_the_title[1]])
-    f.close()
-    number = random.randint(1, how_many_lines)
-    for trio in data:
-        if number == trio[0]:
-            explanation = trio[2]
-    return explanation
-
-
-
 
 def tiles(position):
     call = ""
     challenge_name = ""
     if position == 1 or position == 10 or position == 16:
-        call = challenges('truthordrink.txt')
+        call = challenges('content/truthordrink.txt')
         challenge_name = "Truth or drink"
-    elif position == 4 or position == 13 or position == 18:
-        call = challenges('generalknowledgeq.txt')
-        challenge_name = "General knowledge"
-    elif position == 2 or position == 20:
+    elif position == 2 or position == 9 or position == 20:
         call = "EVERYBODY DRINKS!"
         challenge_name = "EVERYBODY DRINKS!"
-    elif position == 3 or position == 9:
-        call = "Step away from others with the computer for a second to see the question - it's of the upmost importance that others don't see the question!!!"
-        call = challenges('paranoia.txt')
-        challenge_name = "Paranoia"
     elif position == 8 or position == 15 or position == 19:
-        call = challenges('dareordrink.txt')
+        call = challenges('content/dareordrink.txt')
         challenge_name = "Dare or drink"
-    elif position == 6 or position == 12:
-        call = challenges('neverhaveiever.txt')
+    elif position == 6 or position == 12 or position == 18:
+        call = challenges('content/neverhaveiever.txt')
         challenge_name = "Never have I ever"
-    elif position == 7 or position == 14 or position == 17:
-        call = challenges_baila_title('baila.txt')
-        call = challenges_baila_explanation('baila.txt')
+    elif position == 3 or position == 7 or position == 14 or position == 17:
+        call = challenges('content/baila.txt')
         challenge_name = "Baila"
-    elif position == 5:
+    elif position == 5 or position == 13:
         call = "LUCKY YOU! You can rest right now and not drink."
         challenge_name = "LUCKY"
-    elif position == 11:
+    elif position == 11 or position == 4:
         call = "Down your drink right this second and go get yourself a new one."
         challenge_name = "CHUG"
     return call, challenge_name
 
 pygame.init()
 screen = pygame.display.set_mode((900, 700))
-mainpage_image = pygame.image.load('mainpage.jpg')
+mainpage_image = pygame.image.load('pics/mainpage.jpg')
 mainpage_image = pygame.transform.scale(mainpage_image, (900, 700))
-rules_image = pygame.image.load('background.jpg')
+rules_image = pygame.image.load('pics/rules.jpg')
 rules_image = pygame.transform.scale(rules_image, (900, 700))
-game_image = pygame.image.load('background.jpg')
+game_image = pygame.image.load('pics/background.jpg')
 game_image = pygame.transform.scale(game_image, (900, 700))
-truthordrink_image = pygame.image.load('truthordrinktile.jpg')
+truthordrink_image = pygame.image.load('pics/truthordrinktile.jpg')
 truthordrink_image = pygame.transform.scale(truthordrink_image, (tile_width, tile_height))
-dareordrink_image = pygame.image.load('dareordrinktile.jpg')
+dareordrink_image = pygame.image.load('pics/dareordrinktile.jpg')
 dareordrink_image = pygame.transform.scale(dareordrink_image, (tile_width, tile_height))
-downyourdrink_image = pygame.image.load('downyourdrink.jpg')
+downyourdrink_image = pygame.image.load('pics/downyourdrink.jpg')
 downyourdrink_image = pygame.transform.scale(downyourdrink_image, (tile_width, tile_height))
-baila_image = pygame.image.load('bailatile.jpg')
+baila_image = pygame.image.load('pics/bailatile.jpg')
 baila_image = pygame.transform.scale(baila_image, (tile_width, tile_height))
-everybody_drink_image = pygame.image.load('everybodydrinks.jpg')
+everybody_drink_image = pygame.image.load('pics/everybodydrinks.jpg')
 everybody_drink_image = pygame.transform.scale(everybody_drink_image, (tile_width, tile_height))
-neverhaveiever_image = pygame.image.load('neverhaveievertile.jpg')
+neverhaveiever_image = pygame.image.load('pics/neverhaveievertile.jpg')
 neverhaveiever_image = pygame.transform.scale(neverhaveiever_image, (tile_width, tile_height))
-lucky_you_image = pygame.image.load('lucky you.jpg')
+lucky_you_image = pygame.image.load('pics/lucky_you.jpg')
 lucky_you_image = pygame.transform.scale(lucky_you_image, (tile_width, tile_height))
-paranoia_image = pygame.image.load('paranoiatile.jpg')
-paranoia_image = pygame.transform.scale(paranoia_image, (tile_width, tile_height))
-generalknowledge_image = pygame.image.load('generalknowledgetile.jpg')
-generalknowledge_image = pygame.transform.scale(generalknowledge_image, (tile_width, tile_height))
-Finish_image = pygame.image.load('finish.jpg')
+Finish_image = pygame.image.load('pics/finish.jpg')
 Finish_image = pygame.transform.scale(Finish_image, (tile_width, tile_height))
-start_image = pygame.image.load('start.jpg')
+start_image = pygame.image.load('pics/start.jpg')
 start_image = pygame.transform.scale(start_image, (tile_width, tile_height))
 
 WHITE = (255, 255, 255)
@@ -174,26 +126,20 @@ def draw_game_board(position):
         elif i in [8, 15, 19]:
             screen.blit(dareordrink_image, (x, y))
         
-        elif i in [11]:
+        elif i in [4, 11]:
             screen.blit(downyourdrink_image, (x, y))
         
-        elif i in [7, 14, 17]:
+        elif i in [3, 7, 14, 17]:
             screen.blit(baila_image, (x, y))
         
-        elif i in [2, 20]:
+        elif i in [2, 9, 20]:
             screen.blit(everybody_drink_image, (x, y))
 
-        elif i in [6, 12]:
+        elif i in [6, 12, 18]:
             screen.blit(neverhaveiever_image, (x, y))
         
-        elif i in [5]:
+        elif i in [5, 13]:
             screen.blit(lucky_you_image, (x,y))
-        
-        elif i in [3, 9]:
-            screen.blit(paranoia_image, (x, y))
-        
-        elif i in [4, 13, 18]:
-            screen.blit(generalknowledge_image, (x, y))
         
         elif i in [21]:
             screen.blit(Finish_image, (x, y))
@@ -290,7 +236,7 @@ def play_game():
     game_started = False
     welcome_screen = True
     instructions_screen = False
-    instructions = display_instructions("Rulesscreen.txt")
+    instructions = display_instructions("content/rulesscreen.txt")
     win_time = None
     show_popup = False
     waiting_for_input = False
@@ -393,7 +339,7 @@ def play_game():
 
             elif current_screen == RULES_SCREEN:
                 screen.blit(rules_image, (0, 0))
-                instructions_text = display_instructions('Rulesscreen.txt')  
+                instructions_text = display_instructions('content/rulesscreen.txt')  
                 display_message(instructions_text, 50, 100)  
                 pygame.draw.rect(screen, Green, (button2_x, button2_y, button2_width, button2_height))
                 text_surface = button_font.render("Start game", True, BLACK)
